@@ -1,14 +1,12 @@
 package com.expper.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.expper.domain.Authority;
 import com.expper.domain.PersistentToken;
 import com.expper.domain.User;
 import com.expper.repository.PersistentTokenRepository;
 import com.expper.repository.UserRepository;
 import com.expper.security.SecurityUtils;
 import com.expper.service.MailService;
-import com.expper.service.QiniuService;
 import com.expper.service.UserService;
 import com.expper.web.rest.dto.KeyAndPasswordDTO;
 import com.expper.web.rest.dto.UserDTO;
@@ -52,24 +50,14 @@ public class AccountResource {
     @Inject
     private MailService mailService;
 
-    @Inject
-    private QiniuService qiniuService;
-
-
     @RequestMapping(value = "/account/picture", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<String> uploadPicture(@RequestParam("file") MultipartFile picture){
         if (!picture.isEmpty()){
-            try {
-                qiniuService.uploadPicture(SecurityUtils.getCurrentUserLogin(), picture);
-
-                return new ResponseEntity<>(HttpStatus.OK);
-            } catch (IOException e) {
-                return new ResponseEntity<>("Upload picture failed",HttpStatus.INTERNAL_SERVER_ERROR);
-            }
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return null;
     }
 
 
